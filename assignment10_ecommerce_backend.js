@@ -2,22 +2,18 @@ let users = [];
 let products = [];
 let carts = [];
 let orders = [];
-
 let nextUserId = 1;
 let nextProductId = 1;
 let nextOrderId = 1;
-
 function registerUser(name, email, password, address) {
     if (!name || !email || !password || !address) {
         return "All user fields are required.";
     }
-
     if (users.some(user =>
         user.email.toLowerCase() === email.toLowerCase()
     )) {
         return "Email already registered.";
     }
-
     const user = {
         id: nextUserId++,
         name,
@@ -25,58 +21,41 @@ function registerUser(name, email, password, address) {
         password,
         address
     };
-
     users.push(user);
-
     carts.push({
         userId: user.id,
         products: []
     });
-
     return user;
 }
-
 function loginUser(email, password) {
     const user = users.find(user =>
         user.email.toLowerCase() === email.toLowerCase() &&
         user.password === password
     );
-
     return user || "Invalid email or password.";
 }
-
 function getUser(userId) {
     return users.find(user => user.id === userId) || null;
 }
-
 function updateUser(userId, updatedData) {
     const user = getUser(userId);
-
     if (!user) return "User not found.";
-
     Object.assign(user, updatedData);
-
     return user;
 }
-
 function deleteUser(userId) {
     const index = users.findIndex(user => user.id === userId);
-
     if (index === -1) return "User not found.";
-
     users.splice(index, 1);
-
     carts = carts.filter(cart => cart.userId !== userId);
     orders = orders.filter(order => order.userId !== userId);
-
     return "User deleted.";
 }
-
 function addProduct(name, category, price, stock, ratings = []) {
     if (!name || !category || price < 0 || stock < 0) {
         return "Invalid product data.";
     }
-
     const product = {
         id: nextProductId++,
         name,
@@ -85,28 +64,21 @@ function addProduct(name, category, price, stock, ratings = []) {
         stock,
         ratings
     };
-
     products.push(product);
-
     return product;
 }
-
 function deleteProduct(productId) {
     const index = products.findIndex(product =>
         product.id === productId
     );
-
     if (index === -1) return "Product not found.";
-
     products.splice(index, 1);
-
     return "Product deleted.";
 }
-
 function updateProduct(productId, updatedData) {
     const product = products.find(product =>
         product.id === productId
-    );
+        );
 
     if (!product) return "Product not found.";
 
